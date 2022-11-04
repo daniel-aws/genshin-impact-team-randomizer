@@ -10,6 +10,7 @@ import {
   filterElements,
   filterRarity,
   selectedCharacters,
+  supportCharacters,
   setSelectedCharacters,
 } from '../../data/store';
 import { GenshinCharacter, GenshinElement } from '../../types/types';
@@ -32,17 +33,21 @@ const App: Component = () => {
   const team1 = () => Array.from({ length: 4 }, (_, i) => teams()[i]);
   const team2 = () => Array.from({ length: 4 }, (_, i) => teams()[i + 4]);
   const generateTeams = () => {
-    const rnd = shuffle(Array.from(selectedCharacters.selectedCharacters));
-    setTeams(() => rnd.slice(0, 8));
+    // Find 2 support characters that overlap with supportCharacter array and selectedCharacters array
+    const selectedSupportCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => supportCharacters.includes(value)))).slice(0, 2);
+    const otherCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => !supportCharacters.includes(value)))).slice(0, 6);
+    const otherCharactersSplit1 = otherCharacters.slice(0, 3);
+    const otherCharactersSplit2 = otherCharacters.slice(3);
+    setTeams(() => [...otherCharactersSplit1, selectedSupportCharacters[0], ...otherCharactersSplit2, selectedSupportCharacters[1]]);
   };
 
   return (
     <>
       <header class={styles.header}>
-        <h1 class={styles.title}>Genshin Impact Team Randomizer</h1>
+        <h1 class={styles.title}>Genshin Impact Spiral Abyss Drafter</h1>
         <a
           class={styles.githubIcon}
-          href="https://github.com/Pustur/genshin-impact-team-randomizer"
+          href="https://github.com/daniel-aws/genshin-impact-team-randomizer"
           title="GitHub Repository"
           target="_blank"
         >

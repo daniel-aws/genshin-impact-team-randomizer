@@ -6,6 +6,10 @@ const preselectedCharacters: GenshinCharacter['id'][] = [
   4, 5, 18, 25, 41, 39, 28,
 ];
 
+const supportCharacters: GenshinCharacter['id'][] = [
+  5, 7, 10, 54, 16, 24, 28, 29, 33, 34, 50,
+];
+
 const [filterElements, setFilterElements] = createStore<string[]>([]);
 
 const [filterRarity, setFilterRarity] = createStore<number[]>([]);
@@ -22,6 +26,7 @@ export {
   setSelectedCharacters,
   filterElements,
   setFilterElements,
+  supportCharacters,
   filterRarity,
   setFilterRarity,
 };
