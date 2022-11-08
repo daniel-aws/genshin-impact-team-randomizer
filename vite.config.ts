@@ -7,7 +7,7 @@ export default defineConfig({
     target: 'esnext',
   },
   server: {
-    host: '0.0.0.0',
+    host: "localhost",
     open: true,
     port: 8000,
   },

@@ -6,9 +6,26 @@ const preselectedCharacters: GenshinCharacter['id'][] = [
   4, 5, 18, 25, 41, 39, 28,
 ];
 
-const supportCharacters: GenshinCharacter['id'][] = [
-  5, 7, 10, 54, 16, 24, 28, 29, 33, 34, 50,
-];
+const [mainDPSCharacters, setMainDPSCharacters] = createLocalStore(
+  'mainDPSCharacters',
+  {
+    mainDPSCharacters: [1, 56, 9, 11, 13, 15, 19, 20, 21, 22, 27, 57, 28, 30, 31, 33, 37, 53, 42, 46, 48]
+  }
+);
+
+const [offDPSCharacters, setOffDPSCharacters] = createLocalStore(
+  'offDPSCharacters',
+  {
+    offDPSCharacters: [2, 3, 4, 6, 55, 8, 52, 12, 14, 17, 18, 23, 25, 26, 59, 32, 35, 51, 36, 38, 39, 40, 41, 43, 44, 45, 47, 49]
+  }
+);
+
+const [supportCharacters, setSupportCharacters] = createLocalStore(
+  'supportCharacters',
+  {
+    supportCharacters: [5, 7, 10, 54, 16, 24, 28, 29, 33, 34, 50]
+  }
+);
 
 const [filterElements, setFilterElements] = createStore<string[]>([]);
 
@@ -22,11 +39,16 @@ const [selectedCharacters, setSelectedCharacters] = createLocalStore(
 );
 
 export {
+  mainDPSCharacters,
+  setMainDPSCharacters,
+  offDPSCharacters,
+  setOffDPSCharacters,
+  supportCharacters,
+  setSupportCharacters,
   selectedCharacters,
   setSelectedCharacters,
   filterElements,
   setFilterElements,
-  supportCharacters,
   filterRarity,
   setFilterRarity,
 };

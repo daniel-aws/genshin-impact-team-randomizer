@@ -1,17 +1,24 @@
-import { Component, createSignal, For } from 'solid-js';
+import { Component, createSignal, For, Show } from 'solid-js';
 import styles from './App.module.css';
 
 import { Card } from '../Card';
+import { teamPresets } from '../../data/teampresets';
 import { Button } from '../Button';
 import { Container } from '../Container';
 import { Filters } from '../Filters';
+import { Options } from '../Options';
 import { characters } from '../../data/characters';
 import {
   filterElements,
   filterRarity,
   selectedCharacters,
+  mainDPSCharacters,
+  offDPSCharacters,
   supportCharacters,
   setSelectedCharacters,
+  setMainDPSCharacters,
+  setOffDPSCharacters,
+  setSupportCharacters,
 } from '../../data/store';
 import { GenshinCharacter, GenshinElement } from '../../types/types';
 import { shuffle } from '../../utils/utils';
@@ -27,20 +34,323 @@ const idToCard =
     );
 
 const App: Component = () => {
+  //localStorage.clear();
+  let currentSelectedCharacter: any = characters[0];
+  const characterIsMainDPS = () => {
+    return mainDPSCharacters.mainDPSCharacters.includes(currentSelectedCharacter.id);
+  }
+  const characterIsOffDPS = () => {
+    return offDPSCharacters.offDPSCharacters.includes(currentSelectedCharacter.id);
+  }
+  const characterIsSupport = () => {
+    return supportCharacters.supportCharacters.includes(currentSelectedCharacter.id);
+  }
+  const selectMainDPS = () => {
+    setMainDPSCharacters(state => {
+      if (characterIsMainDPS()) {
+        return {
+          ...state,
+          mainDPSCharacters: [
+            ...state.mainDPSCharacters.filter(
+              selected => selected !== currentSelectedCharacter.id,
+            ),
+          ],
+        };
+      }
+      return {
+        ...state,
+        mainDPSCharacters: [
+          ...state.mainDPSCharacters,
+          currentSelectedCharacter.id,
+        ],
+      };
+    });
+    setMainDPS(characterIsMainDPS());
+  }
+  const selectOffDPS = () => {
+    setOffDPSCharacters(state => {
+      if (characterIsOffDPS()) {
+        return {
+          ...state,
+          offDPSCharacters: [
+            ...state.offDPSCharacters.filter(
+              selected => selected !== currentSelectedCharacter.id,
+            ),
+          ],
+        };
+      }
+      return {
+        ...state,
+        offDPSCharacters: [
+          ...state.offDPSCharacters,
+          currentSelectedCharacter.id,
+        ],
+      };
+    });
+    setOffDPS(characterIsOffDPS());
+  }
+  const selectSupport = () => {
+    setSupportCharacters(state => {
+      if (characterIsSupport()) {
+        return {
+          ...state,
+          supportCharacters: [
+            ...state.supportCharacters.filter(
+              selected => selected !== currentSelectedCharacter.id,
+            ),
+          ],
+        };
+      }
+      return {
+        ...state,
+        supportCharacters: [
+          ...state.supportCharacters,
+          currentSelectedCharacter.id,
+        ],
+      };
+    });
+    setSupport(characterIsSupport());
+  }
+
+  const [limit, setLimit] = createSignal(true);
+  const MainDPSLimit: Component = () => {
+    return (
+      <Show when={pro()} fallback={<Show when={limit()} fallback={<Options secondary onClick={() => setLimit(!limit())}>Limit to 1 Main DPS</Options>}>
+      <Options onClick={() => setLimit(!limit())}>Limit to 1 Main DPS</Options>
+    </Show>}> </Show>
+
+    )
+  }
+  
+  const [pro, setPro] = createSignal(false);
+  const ProMode: Component = () => {
+    return (
+      <Show when={pro()} fallback={<Options secondary onClick={() => setPro(!pro())}>Use Preset Teams</Options>}>
+        <Options onClick={() => setPro(!pro())}>Use Preset Teams</Options>
+      </Show>
+    )
+  }
+
+  const [characterText, setCharacterText] = createSignal(currentSelectedCharacter.fullName);
+  const SelectedCharacterText: Component = () => {
+    
+    return <Show when={!pro()} fallback={" "}>
+    <p>Selected Character: {characterText()}</p>
+  </Show>;
+  }
+  const [mainDPS, setMainDPS] = createSignal(characterIsMainDPS());
+  const SelectedMainDPS: Component = () => {
+    return (
+      <Show when={!pro()} fallback={" "}>
+      <Show when={mainDPS()} fallback={<Options secondary onClick={selectMainDPS}>Main DPS</Options>}>
+        <Options onClick={selectMainDPS}>Main DPS</Options>
+        </Show>
+      </Show>
+    )
+  }
+  const [offDPS, setOffDPS] = createSignal(characterIsOffDPS());
+  const SelectedOffDPS: Component = () => {
+    return (
+      <Show when={!pro()} fallback={" "}>
+        <Show when={offDPS()} fallback={<Options secondary onClick={selectOffDPS}>Off DPS</Options>}>
+          <Options onClick={selectOffDPS}>Off DPS</Options>
+        </Show>
+      </Show>
+    )
+  }
+  const [support, setSupport] = createSignal(characterIsSupport());
+  const SelectedSupport: Component = () => {
+    return (
+      <Show when={!pro()} fallback={" "}>
+        <Show when={support()} fallback={<Options secondary onClick={selectSupport}>Support</Options>}>
+          <Options onClick={selectSupport}>Support</Options>
+        </Show>
+      </Show>
+    )
+  }
   const [teams, setTeams] = createSignal<GenshinCharacter['id'][]>([]);
   const areAllCharatersSelected = () =>
     selectedCharacters.selectedCharacters.length === characters.length;
   const team1 = () => Array.from({ length: 4 }, (_, i) => teams()[i]);
   const team2 = () => Array.from({ length: 4 }, (_, i) => teams()[i + 4]);
   const generateTeams = () => {
-    // Find 2 support characters that overlap with supportCharacter array and selectedCharacters array
-    const selectedSupportCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => supportCharacters.includes(value)))).slice(0, 2);
-    const otherCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => !supportCharacters.includes(value)))).slice(0, 6);
-    const otherCharactersSplit1 = otherCharacters.slice(0, 3);
-    const otherCharactersSplit2 = otherCharacters.slice(3);
-    setTeams(() => [...otherCharactersSplit1, selectedSupportCharacters[0], ...otherCharactersSplit2, selectedSupportCharacters[1]]);
-  };
+    if (pro()) {
+      if (selectedCharacters.selectedCharacters.includes(39)) {
+        selectedCharacters.selectedCharacters.splice(39, 1);
+        if (!selectedCharacters.selectedCharacters.includes(999)) {
+          selectedCharacters.selectedCharacters.push(999);
+        }
+        if (!selectedCharacters.selectedCharacters.includes(998)) {
+          selectedCharacters.selectedCharacters.push(998);
+        }
+        if (!selectedCharacters.selectedCharacters.includes(997)) {
+          selectedCharacters.selectedCharacters.push(997);
+        }
+        if (!selectedCharacters.selectedCharacters.includes(996)) {
+          selectedCharacters.selectedCharacters.push(996);
+        }
+      }
+      const randomSelectedCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters));
+      const randomCharacter = randomSelectedCharacters[0];
+      const randomTeamPresets = shuffle(Array.from(teamPresets));
+      let firstTeam: number[] = [];
+      let secondTeam: number[] = [];
+      for (let i: number = 0; i < randomTeamPresets.length; i++) {
+        if (randomTeamPresets[i].includes(randomCharacter)) {
+          let foundCount = 0;
+          for (let j: number = 0; j < randomTeamPresets[i].length; j++) {
+            if (selectedCharacters.selectedCharacters.includes(randomTeamPresets[i][j])) {
+              foundCount++;
+            }
+          }
+          if (foundCount == 4) {
+            firstTeam = randomTeamPresets[i];
+            break;
+          }
+        }
+      }
+      let randomCharacter2 : number = -1;
+      for (let i: number = 1; i < randomSelectedCharacters.length; i++) {
+        if (firstTeam.length != 0 && !firstTeam.includes(randomSelectedCharacters[i])) {
+          randomCharacter2 = randomSelectedCharacters[i];
+          break;
+        }
+      }
+      if (randomCharacter2 != -1) {
+        for (let i: number = 0; i < randomTeamPresets.length; i++) {
+          if (randomTeamPresets[i].includes(randomCharacter2)) {
+            let foundCount = 0;
+            for (let j: number = 0; j < randomTeamPresets[i].length; j++) {
+              if (selectedCharacters.selectedCharacters.includes(randomTeamPresets[i][j]) && !firstTeam.includes(randomTeamPresets[i][j])) {
+                foundCount++;
+              }
+            }
+            if (foundCount == 4) {
+              secondTeam = randomTeamPresets[i];
+              break;
+            }
+          }
+        }
+      }
+      setTeams(() => [...firstTeam, ...secondTeam]);
+    }
+    else if (limit()) {
+      //const selectedMainDPSCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => mainDPSCharacters.mainDPSCharacters.includes(value))));
+      const selectedOffDPSCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => offDPSCharacters.offDPSCharacters.includes(value))));
+      const selectedSupportCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => supportCharacters.supportCharacters.includes(value))));
+      const selectedMainAndOffDPSCharacters = shuffle([...Array.from(selectedCharacters.selectedCharacters.filter(value => mainDPSCharacters.mainDPSCharacters.includes(value))), ...Array.from(selectedCharacters.selectedCharacters.filter(value => offDPSCharacters.offDPSCharacters.includes(value)))]);
 
+      const team1 : any = [];
+      const team2 : any = [];
+
+      let team1Count = 1;
+      let team2Count = 1;
+      let team1MainDPS = false;
+      let team2MainDPS = false;
+
+      const healer1 = selectedSupportCharacters[0];
+      const healer2 = selectedSupportCharacters[1];
+
+      if (healer1 != undefined) { 
+        team1[0] = selectedSupportCharacters[0];
+      }
+      if (healer2! != undefined) {
+        team2[0] = selectedSupportCharacters[1];        
+      }
+      if (mainDPSCharacters.mainDPSCharacters.includes(selectedSupportCharacters[0])) {
+        team1MainDPS = true;
+      }
+      if (mainDPSCharacters.mainDPSCharacters.includes(selectedSupportCharacters[1])) {
+        team2MainDPS = true;
+      }
+
+      if (team1MainDPS == true && team2MainDPS == true) {
+        for (let offDPS of selectedOffDPSCharacters) {
+          if (team1Count + team2Count >= 8) {
+            break;
+          }
+          if (team1Count < 4) {
+            team1.push(offDPS);
+            team1Count++;
+          }
+          else {
+            team2.push(offDPS);
+            team2Count++;
+          }
+        }
+      }
+      else {
+        for (let dps of selectedMainAndOffDPSCharacters) {
+          if (team1Count + team2Count >= 8) {
+            break;
+          }
+          if (team1.includes(dps) || team2.includes(dps)) {
+            continue;
+          }
+          if (mainDPSCharacters.mainDPSCharacters.includes(dps)) {
+            if (team1MainDPS == true && team2MainDPS == true) {
+              continue;
+            }
+            if (team1MainDPS == false) {
+              
+              team1MainDPS = true;
+              team1.push(dps);
+            }
+            else if (team2MainDPS == false) {
+              team2MainDPS = true;
+              team2.push(dps);
+            }
+          }
+          else {
+            if (team1Count < 4) {
+              team1.push(dps);
+              team1Count++;
+            }
+            else {
+              team2.push(dps);
+              team2Count++;
+            }
+          }
+        }
+      }
+      if (team1Count + team2Count < 8) {
+        
+        if (team2.length < 4) {
+          for (let character of team1) {
+            if (Math.abs(team2.length - team1.length) <= 1) {
+              break;
+            }
+            if (team2MainDPS && mainDPSCharacters.mainDPSCharacters.includes(character) || supportCharacters.supportCharacters.includes(character)) {
+              continue;
+            } 
+            team2.push(character);
+            team1.splice(team1.indexOf(character, 0), 1);
+            team1.push(undefined);
+          }
+        }
+      }
+      const parseLength = 4 - team1.length;
+      if (team1.length < 4) {
+        for (let i : number = 0; i < parseLength; i++) {
+          team1.push(undefined);
+        }
+      }
+      setTeams(() => [...team1, ...team2]);
+    }
+    else {
+      const selectedSupportCharacters : any[] = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => supportCharacters.supportCharacters.includes(value)))).slice(0, 2);
+      const otherCharacters : any[] = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => !supportCharacters.supportCharacters.includes(value)))).slice(0, 6);
+      const otherCharactersSplit1 = otherCharacters.slice(0, otherCharacters.length / 2);
+      otherCharactersSplit1.push(selectedSupportCharacters[0]);
+      const parseCount = 4 - otherCharactersSplit1.length;
+      for (let i: number = 0; i < (parseCount); i++) {
+        otherCharactersSplit1.push(undefined);
+      }
+      const otherCharactersSplit2 = otherCharacters.slice(otherCharacters.length / 2);
+      otherCharactersSplit2.push(selectedSupportCharacters[1]);
+      setTeams(() => [...otherCharactersSplit1, ...otherCharactersSplit2]);
+    }
+  }
   return (
     <>
       <header class={styles.header}>
@@ -74,6 +384,8 @@ const App: Component = () => {
           </div>
         </div>
         <div class={styles.buttons}>
+          <ProMode />
+          <MainDPSLimit />
           <Button
             secondary
             onClick={() =>
@@ -88,10 +400,17 @@ const App: Component = () => {
             {areAllCharatersSelected() ? 'Deselect' : 'Select'} all
           </Button>
           <Button onClick={generateTeams}>Generate teams</Button>
+
         </div>
         <Container>
           <Filters />
         </Container>
+        <div class={styles.options}>
+          <SelectedCharacterText />
+          <SelectedMainDPS />
+          <SelectedOffDPS />
+          <SelectedSupport />
+        </div>
         <div class={`${styles.grid} ${styles.mainGrid}`}>
           <For
             each={characters.filter(
@@ -118,6 +437,11 @@ const App: Component = () => {
                         ],
                       };
                     }
+                    currentSelectedCharacter = character;
+                    setCharacterText(currentSelectedCharacter.fullName);
+                    setMainDPS(characterIsMainDPS());
+                    setOffDPS(characterIsOffDPS());
+                    setSupport(characterIsSupport());
                     return {
                       ...state,
                       selectedCharacters: [

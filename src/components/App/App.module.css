@@ -1,4 +1,5 @@
 .buttons,
+.options,
 .mainGrid {
   margin-top: 1rem;
 }
@@ -34,6 +35,12 @@
 }
 
 .buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.options {
   display: flex;
   justify-content: center;
   gap: 1rem;

@@ -1,0 +1,32 @@
+.options {
+    background-color: var(--color-button-bg);
+    border: 2px solid var(--color-button-border);
+    color: var(--color-button-fg);
+    padding: 0.8em 1.4em;
+    border-radius: 100vmax;
+}
+.options:active {
+    background-color: var(--color-button-border);
+    border-color: var(--color-button-bg);
+}
+  
+.options:focus-visible {
+    outline: 2px solid var(--color-button-bg);
+    outline-offset: 3px;
+}
+  
+.secondaryOptions {
+    background-color: var(--color-button-secondary-bg);
+    border-color: var(--color-button-secondary-border);
+    color: var(--color-button-secondary-fg);
+}
+  
+.secondaryOptions:active {
+    background-color: var(--color-button-secondary-bg);
+    border-color: var(--color-button-secondary-border);
+}
+  
+.secondaryOptions:focus-visible {
+    outline-color: var(--color-button-secondary-bg);
+}
+  
