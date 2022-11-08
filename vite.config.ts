@@ -11,4 +11,6 @@ export default defineConfig({
     open: true,
     port: 8000,
   },
+  root: './',
+  publicDir: 'public',
 });
