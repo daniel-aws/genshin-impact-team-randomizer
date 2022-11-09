@@ -3,7 +3,7 @@ import csv
 import sys
 import os
 import boto3
-from opensearchpy import OpenSearch, RequestsHttpConnection
+from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
 
 assert (sys.maxsize & (sys.maxsize+1)) == 0 # checks that maxsize+1 is a power of 2 
 jsonFile = open("./src/data/characterData.json")
