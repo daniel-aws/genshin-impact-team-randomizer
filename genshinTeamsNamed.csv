@@ -66,7 +66,7 @@ Cyno,Collei,Sucrose,Dori
 Cyno,Collei,Yun Jin,Shinobu
 Cyno,Collei,Albedo,Dori
 Cyno,Nahida,Fischl,Barbara
-Cyno,Nahida,Yun jin,Barbara
+Cyno,Nahida,Yun Jin,Barbara
 Cyno,Nahida,Albedo,Zhongli
 Cyno,Nahida,Fischl,Kokomi
 Cyno,Nahida,Yae,Barbara
@@ -76,7 +76,7 @@ Cyno,Nahida,Xingqiu,Shinobu
 Cyno,Nahida,Yelan,Shinobu
 Cyno,Nahida,Beidou,Xingqiu
 Cyno,TravelerDendro,Fischl,Barbara
-Cyno,TravelerDendro,Yun jin,Barbara
+Cyno,TravelerDendro,Yun Jin,Barbara
 Cyno,TravelerDendro,Albedo,Zhongli
 Cyno,TravelerDendro,Fischl,Kokomi
 Cyno,TravelerDendro,Yae,Barbara
@@ -86,7 +86,7 @@ Cyno,TravelerDendro,Xingqiu,Shinobu
 Cyno,TravelerDendro,Yelan,Shinobu
 Cyno,TravelerDendro,Beidou,Xingqiu
 Cyno,Collei,Fischl,Barbara
-Cyno,Collei,Yun jin,Barbara
+Cyno,Collei,Yun Jin,Barbara
 Cyno,Collei,Fischl,Kokomi
 Cyno,Collei,Yae,Barbara
 Cyno,Collei,Yae,Kokomi
@@ -726,6 +726,30 @@ Eula,Raiden,Yelan,Sayu
 Eula,Raiden,Yelan,Shinobu
 Eula,Raiden,Yelan,Dori
 Eula,Raiden,Yelan,Bennett
+Eula,Raiden,Nahida,Diona
+Eula,Raiden,Nahida,Qiqi
+Eula,Raiden,Nahida,Zhongli
+Eula,Raiden,Nahida,Jean
+Eula,Raiden,Nahida,Sayu
+Eula,Raiden,Nahida,Shinobu
+Eula,Raiden,Nahida,Dori
+Eula,Raiden,Nahida,Bennett
+Eula,Raiden,TravelerDendro,Diona
+Eula,Raiden,TravelerDendro,Qiqi
+Eula,Raiden,TravelerDendro,Zhongli
+Eula,Raiden,TravelerDendro,Jean
+Eula,Raiden,TravelerDendro,Sayu
+Eula,Raiden,TravelerDendro,Shinobu
+Eula,Raiden,TravelerDendro,Dori
+Eula,Raiden,TravelerDendro,Bennett
+Eula,Raiden,Collei,Diona
+Eula,Raiden,Collei,Qiqi
+Eula,Raiden,Collei,Zhongli
+Eula,Raiden,Collei,Jean
+Eula,Raiden,Collei,Sayu
+Eula,Raiden,Collei,Shinobu
+Eula,Raiden,Collei,Dori
+Eula,Raiden,Collei,Bennett
 Eula,Ganyu,Albedo,Zhongli
 Eula,Aloy,Albedo,Zhongli
 Eula,Kaeya,Albedo,Zhongli
@@ -6497,25 +6521,25 @@ Chongyun,Aloy,Kazuha,Barbara
 Chongyun,Aloy,Heizou,Kokomi
 Chongyun,Aloy,Heizou,Barbara
 Ganyu,Chongyun,Noelle,Zhongli
-Ganyu,Chongyun,Noelle,Yun jin
+Ganyu,Chongyun,Noelle,Yun Jin
 Ganyu,Chongyun,Noelle,Albedo
 Ganyu,Chongyun,Noelle,TravelerGeo
 Ganyu,Shenhe,Noelle,Zhongli
-Ganyu,Shenhe,Noelle,Yun jin
+Ganyu,Shenhe,Noelle,Yun Jin
 Ganyu,Shenhe,Noelle,Albedo
 Ganyu,Shenhe,Noelle,TravelerGeo
-Shenhe,Chongyun,Yun jin,Zhongli
+Shenhe,Chongyun,Yun Jin,Zhongli
 Shenhe,Chongyun,Albedo,Zhongli
 Shenhe,Chongyun,TravelerGeo,Zhongli
-Shenhe,Ganyu,Yun jin,Zhongli
+Shenhe,Ganyu,Yun Jin,Zhongli
 Shenhe,Ganyu,Albedo,Zhongli
 Shenhe,Ganyu,TravelerGeo,Zhongli
-Shenhe,Rosaria,Yun jin,Zhongli
+Shenhe,Rosaria,Yun Jin,Zhongli
 Shenhe,Rosaria,Albedo,Zhongli
 Shenhe,Rosaria,TravelerGeo,Zhongli
-Shenhe,Kaeya,Yun jin,Zhongli
+Shenhe,Kaeya,Yun Jin,Zhongli
 Shenhe,Kaeya,Albedo,Zhongli
 Shenhe,Kaeya,TravelerGeo,Zhongli
-Shenhe,Ayaka,Yun jin,Zhongli
+Shenhe,Ayaka,Yun Jin,Zhongli
 Shenhe,Ayaka,Albedo,Zhongli
 Shenhe,Ayaka,TravelerGeo,Zhongli
