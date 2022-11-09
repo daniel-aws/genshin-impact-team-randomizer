@@ -43,6 +43,7 @@ Cyno,TravelerDendro,Sucrose,Dori
 Cyno,TravelerDendro,Yun Jin,Shinobu
 Cyno,TravelerDendro,Albedo,Dori
 Cyno,Collei,Fischl,Zhongli
+Cyno,Collei,Albedo,Zhongli
 Cyno,Collei,Fischl,Jean
 Cyno,Collei,Fischl,Sayu
 Cyno,Collei,Yae,Zhongli
@@ -55,6 +56,7 @@ Cyno,Collei,Sucrose,Dori
 Cyno,Collei,Yun Jin,Shinobu
 Cyno,Collei,Albedo,Dori
 Cyno,Nahida,Fischl,Barbara
+Cyno,Nahida,Albedo,Zhongli
 Cyno,Nahida,Fischl,Kokomi
 Cyno,Nahida,Yae,Barbara
 Cyno,Nahida,Yae,Kokomi
@@ -63,6 +65,7 @@ Cyno,Nahida,Xingqiu,Shinobu
 Cyno,Nahida,Yelan,Shinobu
 Cyno,Nahida,Beidou,Xingqiu
 Cyno,TravelerDendro,Fischl,Barbara
+Cyno,TravelerDendro,Albedo,Zhongli
 Cyno,TravelerDendro,Fischl,Kokomi
 Cyno,TravelerDendro,Yae,Barbara
 Cyno,TravelerDendro,Yae,Kokomi
@@ -3506,6 +3509,7 @@ Raiden,Collei,Jean,Zhongli
 Raiden,Nahida,Jean,Zhongli
 Raiden,TravelerDendro,Jean,Zhongli
 Razor,TravelerDendro,Fischl,Dori
+Razor,TravelerDendro,Albedo,Zhongli
 Razor,TravelerDendro,Fischl,Zhongli
 Razor,TravelerDendro,Fischl,Jean
 Razor,TravelerDendro,Fischl,Shinobu
@@ -3526,6 +3530,7 @@ Razor,TravelerDendro,Sucrose,Zhongli
 Razor,TravelerDendro,Sucrose,Jean
 Razor,TravelerDendro,Sucrose,Shinobu
 Razor,Nahida,Fischl,Dori
+Razor,Nahida,Albedo,Zhongli
 Razor,Nahida,Fischl,Zhongli
 Razor,Nahida,Fischl,Jean
 Razor,Nahida,Fischl,Shinobu
@@ -3546,6 +3551,7 @@ Razor,Nahida,Sucrose,Zhongli
 Razor,Nahida,Sucrose,Jean
 Razor,Nahida,Sucrose,Shinobu
 Razor,Collei,Fischl,Dori
+Razor,Collei,Albedo,Zhongli
 Razor,Collei,Fischl,Zhongli
 Razor,Collei,Fischl,Jean
 Razor,Collei,Fischl,Shinobu
@@ -5316,6 +5322,7 @@ Xiao,Fischl,Thoma,Jean
 Xiao,Fischl,Thoma,Sayu
 Xiao,Fischl,Xiangling,Jean
 Xiao,Fischl,Xiangling,Sayu
+Xiao,Zhongli,Albedo,Bennett
 Xiao,Zhongli,Xingqiu,Jean
 Xiao,Zhongli,Xingqiu,Sayu
 Xiao,Zhongli,Yelan,Jean
