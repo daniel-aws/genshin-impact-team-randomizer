@@ -34,6 +34,7 @@ const idToCard =
     );
 
 const App: Component = () => {
+  const travelerList = [999,998,997,996]
   // Banned/removed characters
   if (selectedCharacters.selectedCharacters.includes(39)) {
     setSelectedCharacters(state => {
@@ -188,47 +189,69 @@ const App: Component = () => {
   const generateTeams = () => {
     if (pro()) {
       const randomSelectedCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters));
-      const randomCharacter = randomSelectedCharacters[0];
-      const randomTeamPresets = shuffle(Array.from(teamPresets));
       let firstTeam: number[] = [];
       let secondTeam: number[] = [];
-      for (let i: number = 0; i < randomTeamPresets.length; i++) {
-        if (randomTeamPresets[i].includes(randomCharacter)) {
-          let foundCount = 0;
-          for (let j: number = 0; j < randomTeamPresets[i].length; j++) {
-            if (selectedCharacters.selectedCharacters.includes(randomTeamPresets[i][j])) {
-              foundCount++;
-            }
-          }
-          if (foundCount == 4) {
-            firstTeam = randomTeamPresets[i];
-            break;
-          }
-        }
-      }
+      const randomTeamPresets = shuffle(Array.from(teamPresets));
+
       let randomCharacter2 : number = -1;
       for (let i: number = 1; i < randomSelectedCharacters.length; i++) {
-        if (firstTeam.length != 0 && !firstTeam.includes(randomSelectedCharacters[i])) {
-          randomCharacter2 = randomSelectedCharacters[i];
-          break;
-        }
-      }
-      if (randomCharacter2 != -1) {
-        for (let i: number = 0; i < randomTeamPresets.length; i++) {
-          if (randomTeamPresets[i].includes(randomCharacter2)) {
+        let found = false;
+
+        const randomCharacter = randomSelectedCharacters[i];
+        //console.log("Character 1: " + randomCharacter);
+        for (let j: number = 0; j < randomTeamPresets.length; j++) {
+          firstTeam = [];
+          if (randomTeamPresets[j].includes(randomCharacter)) {
             let foundCount = 0;
-            for (let j: number = 0; j < randomTeamPresets[i].length; j++) {
-              if (selectedCharacters.selectedCharacters.includes(randomTeamPresets[i][j]) && !firstTeam.includes(randomTeamPresets[i][j])) {
+            for (let k: number = 0; k < randomTeamPresets[j].length; k++) {
+              if (selectedCharacters.selectedCharacters.includes(randomTeamPresets[j][k])) {
                 foundCount++;
               }
             }
             if (foundCount == 4) {
-              secondTeam = randomTeamPresets[i];
+              firstTeam = randomTeamPresets[j];
               break;
             }
           }
         }
+        if (travelerList.some(r => firstTeam.includes(r))) {
+          firstTeam = [...firstTeam, ...travelerList];
+        }
+        if (firstTeam.length == 0) {
+          continue;
+        }
+        for (let l: number = 0; l < randomSelectedCharacters.length; l++) {
+          secondTeam = [];
+          randomCharacter2 = randomSelectedCharacters[l];
+          //console.log("Character 2: " + randomCharacter2);
+          for (let m: number = 0; m < randomTeamPresets.length; m++) {
+            if (randomTeamPresets[m].includes(randomCharacter2)) {
+              let foundCount = 0;
+              for (let n: number = 0; n < randomTeamPresets[m].length; n++) {
+                if (selectedCharacters.selectedCharacters.includes(randomTeamPresets[m][n]) && !firstTeam.includes(randomTeamPresets[m][n])) {
+                  foundCount++;
+                }
+              }
+              if (foundCount == 4) {
+                secondTeam = randomTeamPresets[m];
+                found = true;
+                break;
+              }
+            }
+            if (found) {
+              break;
+            }
+          }
+          if (found) {
+            break;
+          }
+        }
+        if (found) {
+          break;
+        }
       }
+      firstTeam.splice(4);
+      secondTeam.splice(4);
       setTeams(() => [...firstTeam, ...secondTeam]);
     }
     else if (limit()) {
