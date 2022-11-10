@@ -34,7 +34,19 @@ const idToCard =
     );
 
 const App: Component = () => {
-  //localStorage.clear();
+  // Banned/removed characters
+  if (selectedCharacters.selectedCharacters.includes(39)) {
+    setSelectedCharacters(state => {
+      return {
+        ...state,
+        selectedCharacters: [
+          ...state.selectedCharacters.filter(
+            selected => selected !== 39,
+          ),
+        ]
+      };
+    });
+  }
   let currentSelectedCharacter: any = characters[0];
   const characterIsMainDPS = () => {
     return mainDPSCharacters.mainDPSCharacters.includes(currentSelectedCharacter.id);
@@ -175,21 +187,6 @@ const App: Component = () => {
   const team2 = () => Array.from({ length: 4 }, (_, i) => teams()[i + 4]);
   const generateTeams = () => {
     if (pro()) {
-      if (selectedCharacters.selectedCharacters.includes(39)) {
-        selectedCharacters.selectedCharacters.splice(39, 1);
-        if (!selectedCharacters.selectedCharacters.includes(999)) {
-          selectedCharacters.selectedCharacters.push(999);
-        }
-        if (!selectedCharacters.selectedCharacters.includes(998)) {
-          selectedCharacters.selectedCharacters.push(998);
-        }
-        if (!selectedCharacters.selectedCharacters.includes(997)) {
-          selectedCharacters.selectedCharacters.push(997);
-        }
-        if (!selectedCharacters.selectedCharacters.includes(996)) {
-          selectedCharacters.selectedCharacters.push(996);
-        }
-      }
       const randomSelectedCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters));
       const randomCharacter = randomSelectedCharacters[0];
       const randomTeamPresets = shuffle(Array.from(teamPresets));

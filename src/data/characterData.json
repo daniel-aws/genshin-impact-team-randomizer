@@ -413,15 +413,6 @@
     "collab": false
   },
   {
-    "id": 39,
-    "fullName": "Traveler",
-    "shortName": "Traveler",
-    "stars": 5,
-    "elements": ["anemo", "geo", "electro", "dendro"],
-    "selected": true,
-    "collab": false
-  },
-  {
     "id": 999,
     "fullName": "Traveler",
     "shortName": "TravelerAnemo",
