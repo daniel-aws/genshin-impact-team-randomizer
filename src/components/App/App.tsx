@@ -276,7 +276,7 @@ const App: Component = () => {
     }
     else if (limit()) {
       //const selectedMainDPSCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => mainDPSCharacters.mainDPSCharacters.includes(value))));
-      const selectedOffDPSCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => offDPSCharacters.offDPSCharacters.includes(value))));
+      let selectedOffDPSCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => offDPSCharacters.offDPSCharacters.includes(value))));
       const selectedSupportCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => supportCharacters.supportCharacters.includes(value))));
       let selectedOtherCharacters = shuffle([...Array.from(selectedCharacters.selectedCharacters.filter(value => mainDPSCharacters.mainDPSCharacters.includes(value))), ...Array.from(selectedCharacters.selectedCharacters.filter(value => offDPSCharacters.offDPSCharacters.includes(value)))]);
 
@@ -306,6 +306,10 @@ const App: Component = () => {
         }
       }
       if (team1MainDPS == true && team2MainDPS == true) {
+
+        if (healerLimit() == 1) {
+          selectedOffDPSCharacters = shuffle(Array.from(selectedOffDPSCharacters.filter(value => supportCharacters.supportCharacters.includes(value))));
+        }
         for (let offDPS of selectedOffDPSCharacters) {
           if (team1Count + team2Count >= 8) {
             break;
