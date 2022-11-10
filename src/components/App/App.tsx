@@ -1,4 +1,4 @@
-import { Component, createSignal, For, Show } from 'solid-js';
+import { Component, createSignal, For, Show, Switch, Match } from 'solid-js';
 import styles from './App.module.css';
 
 import { Card } from '../Card';
@@ -128,8 +128,8 @@ const App: Component = () => {
   const [limit, setLimit] = createSignal(true);
   const MainDPSLimit: Component = () => {
     return (
-      <Show when={pro()} fallback={<Show when={limit()} fallback={<Options secondary onClick={() => setLimit(!limit())}>Limit to 1 Main DPS</Options>}>
-      <Options onClick={() => setLimit(!limit())}>Limit to 1 Main DPS</Options>
+      <Show when={pro()} fallback={<Show when={limit()} fallback={<Options secondary onClick={() => setLimit(!limit())}>Main DPS Required: No</Options>}>
+      <Options secondary onClick={() => setLimit(!limit())}>Main DPS Required: 1</Options>
     </Show>}> </Show>
 
     )
@@ -138,9 +138,29 @@ const App: Component = () => {
   const [pro, setPro] = createSignal(false);
   const ProMode: Component = () => {
     return (
-      <Show when={pro()} fallback={<Options secondary onClick={() => setPro(!pro())}>Use Preset Teams</Options>}>
-        <Options onClick={() => setPro(!pro())}>Use Preset Teams</Options>
+      <Show when={pro()} fallback={<Options secondary onClick={() => setPro(!pro())}>Randomizer Mode</Options>}>
+        <Options secondary onClick={() => setPro(!pro())}>Preset Teams Mode</Options>
       </Show>
+    )
+  }
+
+  const [healerLimit, setHealerLimit] = createSignal(1);
+  const HealLimit: Component = () => {
+    return (
+      <Show when={pro()} fallback={
+        <Switch fallback={" "}>
+          <Match when={healerLimit() == 2}>
+            <Options secondary onClick={() => setHealerLimit(0)}>Supports Required: 1+</Options>
+          </Match>
+          <Match when={healerLimit() == 1}>
+            <Options secondary onClick={() => setHealerLimit(2)}>Supports Required: 1</Options>
+          </Match>
+          <Match when={healerLimit() == 0}>
+            <Options secondary onClick={() => setHealerLimit(1)}>Supports Required: No</Options>
+          </Match>
+        </Switch>}>
+      </Show>
+
     )
   }
 
@@ -258,7 +278,7 @@ const App: Component = () => {
       //const selectedMainDPSCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => mainDPSCharacters.mainDPSCharacters.includes(value))));
       const selectedOffDPSCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => offDPSCharacters.offDPSCharacters.includes(value))));
       const selectedSupportCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => supportCharacters.supportCharacters.includes(value))));
-      const selectedMainAndOffDPSCharacters = shuffle([...Array.from(selectedCharacters.selectedCharacters.filter(value => mainDPSCharacters.mainDPSCharacters.includes(value))), ...Array.from(selectedCharacters.selectedCharacters.filter(value => offDPSCharacters.offDPSCharacters.includes(value)))]);
+      let selectedOtherCharacters = shuffle([...Array.from(selectedCharacters.selectedCharacters.filter(value => mainDPSCharacters.mainDPSCharacters.includes(value))), ...Array.from(selectedCharacters.selectedCharacters.filter(value => offDPSCharacters.offDPSCharacters.includes(value)))]);
 
       const team1 : any = [];
       const team2 : any = [];
@@ -268,26 +288,30 @@ const App: Component = () => {
       let team1MainDPS = false;
       let team2MainDPS = false;
 
-      const healer1 = selectedSupportCharacters[0];
-      const healer2 = selectedSupportCharacters[1];
-
-      if (healer1 != undefined) { 
-        team1[0] = selectedSupportCharacters[0];
+      if (healerLimit() != 0) {
+        const healer1 = selectedSupportCharacters[0];
+        const healer2 = selectedSupportCharacters[1];
+  
+        if (healer1 != undefined) { 
+          team1[0] = selectedSupportCharacters[0];
+        }
+        if (healer2! != undefined) {
+          team2[0] = selectedSupportCharacters[1];        
+        }
+        if (mainDPSCharacters.mainDPSCharacters.includes(selectedSupportCharacters[0])) {
+          team1MainDPS = true;
+        }
+        if (mainDPSCharacters.mainDPSCharacters.includes(selectedSupportCharacters[1])) {
+          team2MainDPS = true;
+        }
       }
-      if (healer2! != undefined) {
-        team2[0] = selectedSupportCharacters[1];        
-      }
-      if (mainDPSCharacters.mainDPSCharacters.includes(selectedSupportCharacters[0])) {
-        team1MainDPS = true;
-      }
-      if (mainDPSCharacters.mainDPSCharacters.includes(selectedSupportCharacters[1])) {
-        team2MainDPS = true;
-      }
-
       if (team1MainDPS == true && team2MainDPS == true) {
         for (let offDPS of selectedOffDPSCharacters) {
           if (team1Count + team2Count >= 8) {
             break;
+          }
+          if (team1.includes(offDPS) || team2.includes(offDPS)) {
+            continue;
           }
           if (team1Count < 4) {
             team1.push(offDPS);
@@ -300,34 +324,38 @@ const App: Component = () => {
         }
       }
       else {
-        for (let dps of selectedMainAndOffDPSCharacters) {
+        if (healerLimit() != 1) {
+          selectedSupportCharacters.splice(selectedSupportCharacters[0], 2);
+          selectedOtherCharacters = shuffle([...selectedOtherCharacters, ...selectedSupportCharacters])
+        }
+        for (let character of selectedOtherCharacters) {
           if (team1Count + team2Count >= 8) {
             break;
           }
-          if (team1.includes(dps) || team2.includes(dps)) {
+          if (team1.includes(character) || team2.includes(character)) {
             continue;
           }
-          if (mainDPSCharacters.mainDPSCharacters.includes(dps)) {
+          if (mainDPSCharacters.mainDPSCharacters.includes(character)) {
             if (team1MainDPS == true && team2MainDPS == true) {
               continue;
             }
             if (team1MainDPS == false) {
               
               team1MainDPS = true;
-              team1.push(dps);
+              team1.push(character);
             }
             else if (team2MainDPS == false) {
               team2MainDPS = true;
-              team2.push(dps);
+              team2.push(character);
             }
           }
           else {
             if (team1Count < 4) {
-              team1.push(dps);
+              team1.push(character);
               team1Count++;
             }
             else {
-              team2.push(dps);
+              team2.push(character);
               team2Count++;
             }
           }
@@ -357,9 +385,17 @@ const App: Component = () => {
       }
       setTeams(() => [...team1, ...team2]);
     }
-    else {
-      const selectedSupportCharacters : any[] = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => supportCharacters.supportCharacters.includes(value)))).slice(0, 2);
-      const otherCharacters : any[] = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => !supportCharacters.supportCharacters.includes(value)))).slice(0, 6);
+    else if (healerLimit() > 0) {
+      const selectedSupportCharacters: any[] = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => supportCharacters.supportCharacters.includes(value)))).slice(0, 2);
+      
+      let otherCharacters: any[] = [];
+      
+      if (healerLimit() == 1) {
+        otherCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => !supportCharacters.supportCharacters.includes(value)))).slice(0, 6);
+      }
+      else {
+        otherCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters.filter(value => !selectedSupportCharacters.includes(value)))).slice(0, 6);
+      }
       const otherCharactersSplit1 = otherCharacters.slice(0, otherCharacters.length / 2);
       otherCharactersSplit1.push(selectedSupportCharacters[0]);
       const parseCount = 4 - otherCharactersSplit1.length;
@@ -370,11 +406,15 @@ const App: Component = () => {
       otherCharactersSplit2.push(selectedSupportCharacters[1]);
       setTeams(() => [...otherCharactersSplit1, ...otherCharactersSplit2]);
     }
+    else {
+      const rnd = shuffle(Array.from(selectedCharacters.selectedCharacters));
+      setTeams(() => rnd.slice(0, 8));
+    }
   }
   return (
     <>
       <header class={styles.header}>
-        <h1 class={styles.title}>Genshin Impact Spiral Abyss Drafter</h1>
+        <h1 class={styles.title}>Genshin Impact Team Randomizer (Gottsmillk Version)</h1>
         <a
           class={styles.githubIcon}
           href="https://github.com/daniel-aws/genshin-impact-team-randomizer"
@@ -394,6 +434,7 @@ const App: Component = () => {
           </svg>
         </a>
       </header>
+      <h5 class={styles.title}>Choose between using preset teams, or select roles for your characters and choose a random assortment of characters based on roles</h5>
       <main>
         <div class={styles.teams}>
           <div class={`${styles.grid} ${styles.team}`}>
@@ -405,7 +446,6 @@ const App: Component = () => {
         </div>
         <div class={styles.buttons}>
           <ProMode />
-          <MainDPSLimit />
           <Button
             secondary
             onClick={() =>
@@ -425,6 +465,12 @@ const App: Component = () => {
         <Container>
           <Filters />
         </Container>
+        
+        <div class={styles.options}>
+          <MainDPSLimit />
+          <HealLimit />
+        </div>
+
         <div class={styles.options}>
           <SelectedCharacterText />
           <SelectedMainDPS />
