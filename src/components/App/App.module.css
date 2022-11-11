@@ -5,13 +5,12 @@
 }
 
 .header {
-  --size-half-header-icon: calc(var(--size-header-icon) / 2);
+  --size-half-header-icon: calc(var(--size-header-icon));
   --size-external-col: calc(
-    var(--size-half-header-icon) + var(--size-header-icon)
-  );
+    var(--size-half-header-icon) + (8 * var(--size-header-icon)));
 
   display: grid;
-  gap: var(--size-half-header-icon);
+  gap: 0;
   grid-template-columns: var(--size-external-col) 1fr var(--size-external-col);
   align-items: center;
 }
@@ -21,12 +20,9 @@
   text-align: center;
   font-weight: 400;
 }
-.title2 {
-  grid-column: 2;
-  text-align: center;
-  font-weight: 10;
-  border-bottom: 2px;
-  border-top: 2px;
+
+.githubIcon {
+  margin-left: 10px;
 }
 
 .githubIconPath {
@@ -39,6 +35,29 @@
   flex-wrap: wrap;
   position: relative;
   z-index: 1;
+}
+
+.version {
+  grid-template-columns: 1fr 35px;
+  text-align: right;
+  vertical-align: middle;
+  fill: var(--color-fg);
+  display: grid;
+  align-items: center;
+}
+
+.versionText {
+  grid-column: 1;
+  text-align: right;
+  vertical-align: middle;
+  right: 0px;
+}
+
+.versionText2 {
+  grid-column: 2;
+  text-align: right;
+  right: 0px;
+  margin-left: 10px;
 }
 
 .buttons {
