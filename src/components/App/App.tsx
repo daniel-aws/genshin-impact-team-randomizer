@@ -212,11 +212,11 @@ const App: Component = () => {
       let firstTeam: number[] = [];
       let secondTeam: number[] = [];
       const randomTeamPresets = shuffle(Array.from(teamPresets));
-
+      let lastValidTeam: number[] = [];
       let randomCharacter2 : number = -1;
       for (let i: number = 1; i < randomSelectedCharacters.length; i++) {
         let found = false;
-
+        firstTeam = [];
         const randomCharacter = randomSelectedCharacters[i];
         //console.log("Character 1: " + randomCharacter);
         for (let j: number = 0; j < randomTeamPresets.length; j++) {
@@ -230,6 +230,7 @@ const App: Component = () => {
             }
             if (foundCount == 4) {
               firstTeam = randomTeamPresets[j];
+              lastValidTeam = firstTeam;
               break;
             }
           }
@@ -271,7 +272,12 @@ const App: Component = () => {
         }
       }
       firstTeam.splice(4);
+      if (firstTeam.length == 0) {
+        firstTeam = lastValidTeam;
+      }
+      //console.log(firstTeam);
       secondTeam.splice(4);
+      //console.log(secondTeam);
       setTeams(() => [...firstTeam, ...secondTeam]);
     }
     else if (limit()) {
