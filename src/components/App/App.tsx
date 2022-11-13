@@ -170,9 +170,9 @@ const App: Component = () => {
   const [teamCompText, setTeamCompText] = createSignal("");
   const TeamCompDisplay: Component = () => {
     resetText();
-    return (
-      <p>{teamCompText()}</p>
-    )
+    return <Show when={!pro()} fallback={" "}>
+    <p>{teamCompText()}</p>
+    </Show>;
   }
 
   const [limit, setLimit] = createSignal(true);
