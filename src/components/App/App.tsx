@@ -125,11 +125,61 @@ const App: Component = () => {
     setSupport(characterIsSupport());
   }
 
+  function setElements(limit : boolean, healerlimit : number) {
+    setLimit(limit);
+    setHealerLimit(healerlimit);
+    resetText();
+  }
+
+  function resetText () {
+    let finaltext = "";
+    const pretext = "Create a team where there will be ";
+    const mainDPSpretext = ["any amount of Main DPS, even 0 Main DPS,", "exactly one Main DPS"];
+    const supportpretext = ["any amount of Supports, even 0 Supports,", "exactly one Support", "at least one Support"]
+    const posttext = " in the team."
+    
+    finaltext = pretext;
+
+    switch (limit()) {
+      case false:
+        finaltext += mainDPSpretext[0];
+        break;
+      case true:
+        finaltext += mainDPSpretext[1];
+        break;
+    }
+
+    finaltext += " and ";
+
+    switch (healerLimit()) {
+      case 0:
+        finaltext += supportpretext[0];
+        break;
+      case 1:
+        finaltext += supportpretext[1];
+        break;
+      case 2:
+        finaltext += supportpretext[2];
+        break;
+    }
+
+    finaltext += posttext;
+    setTeamCompText(finaltext);
+  }
+
+  const [teamCompText, setTeamCompText] = createSignal("");
+  const TeamCompDisplay: Component = () => {
+    resetText();
+    return (
+      <p>{teamCompText()}</p>
+    )
+  }
+
   const [limit, setLimit] = createSignal(true);
   const MainDPSLimit: Component = () => {
     return (
-      <Show when={pro()} fallback={<Show when={limit()} fallback={<Options secondary onClick={() => setLimit(!limit())}>Main DPS Required: No</Options>}>
-      <Options secondary onClick={() => setLimit(!limit())}>Main DPS Required: 1</Options>
+      <Show when={pro()} fallback={<Show when={limit()} fallback={<Options secondary onClick={() => setElements(!limit(), healerLimit())}>Main DPS Required: No</Options>}>
+      <Options secondary onClick={() => setElements(!limit(), healerLimit())}>Main DPS Required: 1</Options>
     </Show>}> </Show>
 
     )
@@ -138,8 +188,8 @@ const App: Component = () => {
   const [pro, setPro] = createSignal(false);
   const ProMode: Component = () => {
     return (
-      <Show when={pro()} fallback={<Options secondary onClick={() => setPro(!pro())}>Randomizer Mode</Options>}>
-        <Options secondary onClick={() => setPro(!pro())}>Preset Teams Mode</Options>
+      <Show when={pro()} fallback={<Options secondary onClick={() => setPro(!pro())} title={"Click me to switch to Preset Teams Mode"}>Randomizer Mode</Options>}>
+        <Options secondary onClick={() => setPro(!pro())} title={"Click me to switch to Randomizer Mode"}>Preset Teams Mode</Options>
       </Show>
     )
   }
@@ -150,13 +200,13 @@ const App: Component = () => {
       <Show when={pro()} fallback={
         <Switch fallback={" "}>
           <Match when={healerLimit() == 2}>
-            <Options secondary onClick={() => setHealerLimit(0)}>Supports Required: 1+</Options>
+            <Options secondary onClick={() => setElements(limit(), 0)}>Supports Required: 1+</Options>
           </Match>
           <Match when={healerLimit() == 1}>
-            <Options secondary onClick={() => setHealerLimit(2)}>Supports Required: 1</Options>
+            <Options secondary onClick={() => setElements(limit(), 2)}>Supports Required: 1</Options>
           </Match>
           <Match when={healerLimit() == 0}>
-            <Options secondary onClick={() => setHealerLimit(1)}>Supports Required: No</Options>
+            <Options secondary onClick={() => setElements(limit(), 1)}>Supports Required: No</Options>
           </Match>
         </Switch>}>
       </Show>
@@ -450,7 +500,10 @@ const App: Component = () => {
             </div>
           </div>
       </header>
-      <h5 class={styles.title}>Choose between using preset teams, or select roles for your characters and choose a random assortment of characters based on roles</h5>
+      <h5 class={styles.title}>Choose between two modes:
+        <p><b><u>Randomizer Mode:</u></b> Select roles for each character and whether to limit/require Main DPS or Supports. Then chooses randomly.</p>
+        <p><b><u>Preset Teams Mode:</u></b> Teams and character modes are preset from well-known character guides and team databases.</p>
+      </h5>
       <main>
         <div class={styles.teams}>
           <div class={`${styles.grid} ${styles.team}`}>
@@ -485,6 +538,9 @@ const App: Component = () => {
         <div class={styles.options}>
           <MainDPSLimit />
           <HealLimit />
+        </div>
+        <div class={styles.options}>
+          <TeamCompDisplay />
         </div>
 
         <div class={styles.options}>

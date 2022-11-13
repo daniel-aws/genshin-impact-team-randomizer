@@ -1,6 +1,6 @@
 {
   "name": "genshin-impact-spiral-drafter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A web app to draft a random Genshin Impact Spiral Abyss team based on the characters that you own. Forked from Github user Pustur's Genshin Impact Randomizer.",
   "files": [
     "dist"
