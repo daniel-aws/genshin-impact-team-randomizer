@@ -16,7 +16,7 @@ const [mainDPSCharacters, setMainDPSCharacters] = createLocalStore(
 const [offDPSCharacters, setOffDPSCharacters] = createLocalStore(
   'offDPSCharacters',
   {
-    offDPSCharacters: [2, 3, 4, 6, 55, 8, 52, 12, 14, 17, 18, 23, 25, 26, 59, 32, 35, 51, 36, 38, 39, 40, 41, 43, 44, 45, 47, 49]
+    offDPSCharacters: [2, 3, 4, 6, 55, 8, 52, 12, 14, 17, 18, 23, 25, 26, 59, 32, 35, 51, 36, 38, 39, 40, 41, 43, 44, 45, 47, 49, 60]
   }
 );
 
