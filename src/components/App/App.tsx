@@ -514,6 +514,7 @@ const App: Component = () => {
           </div>
         </div>
         <div class={styles.buttons}>
+          <p>Current Mode:</p>
           <ProMode />
           <Button
             secondary
