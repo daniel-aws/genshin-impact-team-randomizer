@@ -474,6 +474,13 @@ const App: Component = () => {
   return (
     <>
       <header class={styles.header}>
+        <div class={styles.support}>
+        <a class={styles.supportLink}
+                href="https://ko-fi.com/gottsmillk"
+                title="Ko-Fi"
+                target="_blank"
+              >Support me for hosting costs</a>
+        </div>
         <h1 class={styles.title}>Genshin Impact Team Randomizer (Gottsmillk Version)</h1>
         <div>
           <div class={styles.version}>
@@ -496,9 +503,9 @@ const App: Component = () => {
                   />
                 </svg>
               </a>
-              </div>
             </div>
           </div>
+        </div>
       </header>
       <h5 class={styles.title}>Choose between two modes:
         <p><b><u>Randomizer Mode:</u></b> Select roles for each character and whether to limit/require Main DPS or Supports. Then chooses randomly.</p>

@@ -37,6 +37,21 @@
   z-index: 1;
 }
 
+.support {
+  grid-template-columns: 1fr 35px;
+  text-align: center;
+  vertical-align: middle;
+  fill: var(--color-fg);
+  display: grid;
+  align-items: center;
+}
+
+.supportLink {
+  color: #b9c6df;
+  background-color: transparent;
+  text-decoration: none;
+}
+
 .version {
   grid-template-columns: 1fr 35px;
   text-align: right;
