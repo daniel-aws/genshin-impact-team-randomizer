@@ -429,7 +429,8 @@
     "elements": ["anemo"],
     "selected": true,
     "collab": false
-  },  {
+  },
+  {
     "id": 998,
     "fullName": "Traveler",
     "shortName": "TravelerGeo",
@@ -437,7 +438,8 @@
     "elements": ["geo"],
     "selected": true,
     "collab": false
-  },  {
+  },
+  {
     "id": 997,
     "fullName": "Traveler",
     "shortName": "TravelerElectro",
@@ -445,7 +447,8 @@
     "elements": ["electro"],
     "selected": true,
     "collab": false
-  },  {
+  },
+  {
     "id": 996,
     "fullName": "Traveler",
     "shortName": "TravelerDendro",
