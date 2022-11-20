@@ -185,7 +185,7 @@ const App: Component = () => {
     )
   }
   
-  const [pro, setPro] = createSignal(false);
+  const [pro, setPro] = createSignal(true);
   const ProMode: Component = () => {
     return (
       <Show when={pro()} fallback={<Options secondary onClick={() => setPro(!pro())} title={"Click me to switch to Preset Teams Mode"}>Randomizer Mode</Options>}>
