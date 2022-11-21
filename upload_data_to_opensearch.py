@@ -41,6 +41,24 @@ response = client.delete_by_query(
     }
 )
 
+response = client.delete_by_query(
+    index = "genshin-3-2-firsthalf",
+    body = {
+        "query": {
+            "match_all": {}
+        }
+    }
+)
+
+response = client.delete_by_query(
+    index = "genshin-3-2-secondhalf",
+    body = {
+        "query": {
+            "match_all": {}
+        }
+    }
+)
+
 jsonData = ""
 
 with open("genshinTeamsNamed.csv",'r') as f3:
@@ -69,12 +87,78 @@ with open("genshinTeamsNamed.csv",'r') as f3:
         
 f3.close()
 
-jsonFile.close()
+response = client.bulk(jsonData)
+
+print('\nAdding bulk documents to Opensearch')
+print(response)
+
+jsonData = ""
+
+with open("genshinTeamsNamed32FirstHalf.csv",'r') as f3:
+    csvReader = csv.DictReader(f3)
+    alphabeticalRow = [None, None, None, None]
+
+    for rows in csvReader:
+
+        alphabeticalRow[0] = rows['Character 1']
+        alphabeticalRow[1] = rows['Character 2']
+        alphabeticalRow[2] = rows['Character 3']
+        alphabeticalRow[3] = rows['Character 4']
+        alphabeticalRow.sort()
+        arrayToString = alphabeticalRow[0] + alphabeticalRow[1] + alphabeticalRow[2] + alphabeticalRow[3]
+        hashValue = hash(arrayToString) + sys.maxsize + 1
+
+        jsonEntryHeader = {"index": {"_index": "genshin-3-2-firsthalf", "_id": hashValue}}
+        jsonEntryBody = {}
+
+        jsonEntryBody['1'] = alphabeticalRow[0]
+        jsonEntryBody['2'] = alphabeticalRow[1]
+        jsonEntryBody['3'] = alphabeticalRow[2]
+        jsonEntryBody['4'] = alphabeticalRow[3]
+
+        jsonData += (json.dumps(jsonEntryHeader) + "\n" + json.dumps(jsonEntryBody) + "\n")
+        
+f3.close()
 
 response = client.bulk(jsonData)
 
 print('\nAdding bulk documents to Opensearch')
 print(response)
+
+jsonData = ""
+
+with open("genshinTeamsNamed32SecondHalf.csv",'r') as f3:
+    csvReader = csv.DictReader(f3)
+    alphabeticalRow = [None, None, None, None]
+
+    for rows in csvReader:
+
+        alphabeticalRow[0] = rows['Character 1']
+        alphabeticalRow[1] = rows['Character 2']
+        alphabeticalRow[2] = rows['Character 3']
+        alphabeticalRow[3] = rows['Character 4']
+        alphabeticalRow.sort()
+        arrayToString = alphabeticalRow[0] + alphabeticalRow[1] + alphabeticalRow[2] + alphabeticalRow[3]
+        hashValue = hash(arrayToString) + sys.maxsize + 1
+
+        jsonEntryHeader = {"index": {"_index": "genshin-3-2-secondhalf", "_id": hashValue}}
+        jsonEntryBody = {}
+
+        jsonEntryBody['1'] = alphabeticalRow[0]
+        jsonEntryBody['2'] = alphabeticalRow[1]
+        jsonEntryBody['3'] = alphabeticalRow[2]
+        jsonEntryBody['4'] = alphabeticalRow[3]
+
+        jsonData += (json.dumps(jsonEntryHeader) + "\n" + json.dumps(jsonEntryBody) + "\n")
+        
+f3.close()
+
+response = client.bulk(jsonData)
+
+print('\nAdding bulk documents to Opensearch')
+print(response)
+
+jsonFile.close()
 
 print("Complete")
 

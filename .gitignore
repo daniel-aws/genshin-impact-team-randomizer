@@ -2,3 +2,5 @@ node_modules/
 dist/
 .~lock.genshinTeamsNamed.csv#
 src/data/teampresets.ts
+src/data/teampresets32FirstHalf.ts
+src/data/teampresets32SecondHalf.ts

@@ -3,6 +3,8 @@ import styles from './App.module.css';
 import { version } from '../../../package.json';
 import { Card } from '../Card';
 import { teamPresets } from '../../data/teampresets';
+import { teamPresets32FirstHalf } from '../../data/teampresets32FirstHalf';
+import { teamPresets32SecondHalf } from '../../data/teampresets32SecondHalf';
 import { Button } from '../Button';
 import { Container } from '../Container';
 import { Filters } from '../Filters';
@@ -170,7 +172,7 @@ const App: Component = () => {
   const [teamCompText, setTeamCompText] = createSignal("");
   const TeamCompDisplay: Component = () => {
     resetText();
-    return <Show when={!pro()} fallback={" "}>
+    return <Show when={pro() == 0} fallback={" "}>
     <p>{teamCompText()}</p>
     </Show>;
   }
@@ -178,26 +180,34 @@ const App: Component = () => {
   const [limit, setLimit] = createSignal(true);
   const MainDPSLimit: Component = () => {
     return (
-      <Show when={pro()} fallback={<Show when={limit()} fallback={<Options secondary onClick={() => setElements(!limit(), healerLimit())}>Main DPS Required: No</Options>}>
+      <Show when={pro() != 0} fallback={<Show when={limit()} fallback={<Options secondary onClick={() => setElements(!limit(), healerLimit())}>Main DPS Required: No</Options>}>
       <Options secondary onClick={() => setElements(!limit(), healerLimit())}>Main DPS Required: 1</Options>
     </Show>}> </Show>
 
     )
   }
   
-  const [pro, setPro] = createSignal(true);
+  const [pro, setPro] = createSignal(2);
   const ProMode: Component = () => {
     return (
-      <Show when={pro()} fallback={<Options secondary onClick={() => setPro(!pro())} title={"Click me to switch to Preset Teams Mode"}>Randomizer Mode</Options>}>
-        <Options secondary onClick={() => setPro(!pro())} title={"Click me to switch to Randomizer Mode"}>Preset Teams Mode</Options>
-      </Show>
+      <Switch fallback={" "}>
+        <Match when={pro() == 2}>
+          <Options secondary onClick={() => setPro(0)} title={"Click me to switch to Randomizer Mode"}>3.2 Abyss Presets Teams Mode</Options>
+        </Match>
+        <Match when={pro() == 1}>
+          <Options secondary onClick={() => setPro(2)} title={"Click me to switch to 3.2 Abyss Presets Teams Mode"}>Preset Teams Mode</Options>
+        </Match>
+        <Match when={pro() == 0}>
+          <Options secondary onClick={() => setPro(1)} title={"Click me to switch to Preset Teams Mode"}>Randomizer Mode</Options>
+        </Match>
+      </Switch>
     )
   }
 
   const [healerLimit, setHealerLimit] = createSignal(1);
   const HealLimit: Component = () => {
     return (
-      <Show when={pro()} fallback={
+      <Show when={pro() != 0} fallback={
         <Switch fallback={" "}>
           <Match when={healerLimit() == 2}>
             <Options secondary onClick={() => setElements(limit(), 0)}>Supports Required: 1+</Options>
@@ -217,14 +227,14 @@ const App: Component = () => {
   const [characterText, setCharacterText] = createSignal(currentSelectedCharacter.fullName);
   const SelectedCharacterText: Component = () => {
     
-    return <Show when={!pro()} fallback={" "}>
+    return <Show when={pro() == 0} fallback={" "}>
     <p>Selected Character: {characterText()}</p>
   </Show>;
   }
   const [mainDPS, setMainDPS] = createSignal(characterIsMainDPS());
   const SelectedMainDPS: Component = () => {
     return (
-      <Show when={!pro()} fallback={" "}>
+      <Show when={pro() == 0} fallback={" "}>
       <Show when={mainDPS()} fallback={<Options secondary onClick={selectMainDPS}>Main DPS</Options>}>
         <Options onClick={selectMainDPS}>Main DPS</Options>
         </Show>
@@ -234,7 +244,7 @@ const App: Component = () => {
   const [offDPS, setOffDPS] = createSignal(characterIsOffDPS());
   const SelectedOffDPS: Component = () => {
     return (
-      <Show when={!pro()} fallback={" "}>
+      <Show when={pro() == 0} fallback={" "}>
         <Show when={offDPS()} fallback={<Options secondary onClick={selectOffDPS}>Off DPS</Options>}>
           <Options onClick={selectOffDPS}>Off DPS</Options>
         </Show>
@@ -244,7 +254,7 @@ const App: Component = () => {
   const [support, setSupport] = createSignal(characterIsSupport());
   const SelectedSupport: Component = () => {
     return (
-      <Show when={!pro()} fallback={" "}>
+      <Show when={pro() == 0} fallback={" "}>
         <Show when={support()} fallback={<Options secondary onClick={selectSupport}>Support</Options>}>
           <Options onClick={selectSupport}>Support</Options>
         </Show>
@@ -257,7 +267,82 @@ const App: Component = () => {
   const team1 = () => Array.from({ length: 4 }, (_, i) => teams()[i]);
   const team2 = () => Array.from({ length: 4 }, (_, i) => teams()[i + 4]);
   const generateTeams = () => {
-    if (pro()) {
+    
+    if (pro() == 2) {
+      const randomSelectedCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters));
+      let firstTeam: number[] = [];
+      let secondTeam: number[] = [];
+      const randomTeamPresets = shuffle(Array.from(teamPresets32FirstHalf));
+      const randomTeamPresets2 = shuffle(Array.from(teamPresets32SecondHalf));
+      let lastValidTeam: number[] = [];
+      let randomCharacter2 : number = -1;
+      for (let i: number = 1; i < randomSelectedCharacters.length; i++) {
+        let found = false;
+        firstTeam = [];
+        const randomCharacter = randomSelectedCharacters[i];
+        //console.log("Character 1: " + randomCharacter);
+        for (let j: number = 0; j < randomTeamPresets.length; j++) {
+          firstTeam = [];
+          if (randomTeamPresets[j].includes(randomCharacter)) {
+            let foundCount = 0;
+            for (let k: number = 0; k < randomTeamPresets[j].length; k++) {
+              if (selectedCharacters.selectedCharacters.includes(randomTeamPresets[j][k])) {
+                foundCount++;
+              }
+            }
+            if (foundCount == 4) {
+              firstTeam = randomTeamPresets[j];
+              lastValidTeam = firstTeam;
+              break;
+            }
+          }
+        }
+        if (travelerList.some(r => firstTeam.includes(r))) {
+          firstTeam = [...firstTeam, ...travelerList];
+        }
+        if (firstTeam.length == 0) {
+          continue;
+        }
+        for (let l: number = 0; l < randomSelectedCharacters.length; l++) {
+          secondTeam = [];
+          randomCharacter2 = randomSelectedCharacters[l];
+          //console.log("Character 2: " + randomCharacter2);
+          for (let m: number = 0; m < randomTeamPresets2.length; m++) {
+            if (randomTeamPresets2[m].includes(randomCharacter2)) {
+              let foundCount = 0;
+              for (let n: number = 0; n < randomTeamPresets2[m].length; n++) {
+                if (selectedCharacters.selectedCharacters.includes(randomTeamPresets2[m][n]) && !firstTeam.includes(randomTeamPresets2[m][n])) {
+                  foundCount++;
+                }
+              }
+              if (foundCount == 4) {
+                secondTeam = randomTeamPresets2[m];
+                found = true;
+                break;
+              }
+            }
+            if (found) {
+              break;
+            }
+          }
+          if (found) {
+            break;
+          }
+        }
+        if (found) {
+          break;
+        }
+      }
+      firstTeam.splice(4);
+      if (firstTeam.length == 0) {
+        firstTeam = lastValidTeam;
+      }
+      //console.log(firstTeam);
+      secondTeam.splice(4);
+      //console.log(secondTeam);
+      setTeams(() => [...firstTeam, ...secondTeam]);
+    }
+    else if (pro() == 1) {
       const randomSelectedCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters));
       let firstTeam: number[] = [];
       let secondTeam: number[] = [];
@@ -507,9 +592,10 @@ const App: Component = () => {
           </div>
         </div>
       </header>
-      <h5 class={styles.title}>Choose between two modes:
+      <h5 class={styles.title}>Choose between three modes:
         <p><b><u>Randomizer Mode:</u></b> Select roles for each character and whether to limit/require Main DPS or Supports. Then chooses randomly.</p>
         <p><b><u>Preset Teams Mode:</u></b> Teams and character modes are preset from well-known character guides and team databases.</p>
+        <p><b><u>3.2 Preset Teams Mode:</u></b> Teams and character modes are further restricted to 3.2 Abyss viable teams.</p>
       </h5>
       <main>
         <div class={styles.teams}>
