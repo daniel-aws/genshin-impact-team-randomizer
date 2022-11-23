@@ -46,6 +46,13 @@
   align-items: center;
 }
 
+.support2 {
+  text-align: right;
+  vertical-align: middle;
+  fill: var(--color-fg);
+  align-items: right;
+}
+
 .supportLink {
   color: #b9c6df;
   background-color: transparent;
@@ -59,6 +66,12 @@
   fill: var(--color-fg);
   display: grid;
   align-items: center;
+}
+
+.affiliateText {
+  grid-column: 1;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .versionText {
