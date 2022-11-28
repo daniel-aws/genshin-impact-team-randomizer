@@ -9,14 +9,14 @@ const preselectedCharacters: GenshinCharacter['id'][] = [
 const [mainDPSCharacters, setMainDPSCharacters] = createLocalStore(
   'mainDPSCharacters',
   {
-    mainDPSCharacters: [1, 56, 9, 11, 13, 15, 19, 20, 21, 22, 27, 57, 28, 30, 31, 33, 37, 53, 42, 46, 48, 59]
+    mainDPSCharacters: [1, 56, 9, 11, 13, 15, 19, 20, 21, 22, 27, 57, 28, 30, 31, 33, 37, 53, 42, 46, 48, 62]
   }
 );
 
 const [offDPSCharacters, setOffDPSCharacters] = createLocalStore(
   'offDPSCharacters',
   {
-    offDPSCharacters: [2, 3, 4, 6, 55, 8, 52, 12, 14, 17, 18, 23, 25, 26, 59, 32, 35, 51, 36, 38, 39, 40, 41, 43, 44, 45, 47, 49, 60, 58]
+    offDPSCharacters: [2, 3, 4, 6, 55, 8, 52, 12, 14, 17, 18, 23, 25, 26, 59, 32, 35, 51, 36, 38, 39, 40, 41, 43, 44, 45, 47, 49, 60, 61]
   }
 );
 
