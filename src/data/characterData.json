@@ -134,6 +134,15 @@
     "collab": false
   },
   {
+    "id": 61,
+    "fullName": "Faruzan",
+    "shortName": "Faruzan",
+    "stars": 4,
+    "elements": ["anemo"],
+    "selected": false,
+    "collab": false
+  },
+  {
     "id": 12,
     "fullName": "Fischl",
     "shortName": "Fischl",
@@ -461,6 +470,15 @@
     "id": 40,
     "fullName": "Venti",
     "shortName": "Venti",
+    "stars": 5,
+    "elements": ["anemo"],
+    "selected": false,
+    "collab": false
+  },
+  {
+    "id": 62,
+    "fullName": "Wanderer",
+    "shortName": "Wanderer",
     "stars": 5,
     "elements": ["anemo"],
     "selected": false,
