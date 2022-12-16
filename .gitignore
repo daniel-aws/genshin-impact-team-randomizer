@@ -4,3 +4,5 @@ dist/
 src/data/teampresets.ts
 src/data/teampresets32FirstHalf.ts
 src/data/teampresets32SecondHalf.ts
+src/data/teampresets33FirstHalf.ts
+src/data/teampresets33SecondHalf.ts
