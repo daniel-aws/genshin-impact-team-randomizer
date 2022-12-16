@@ -42,7 +42,7 @@ response = client.delete_by_query(
 )
 
 response = client.delete_by_query(
-    index = "genshin-3-2-firsthalf",
+    index = "genshin-3-3-firsthalf",
     body = {
         "query": {
             "match_all": {}
@@ -51,7 +51,7 @@ response = client.delete_by_query(
 )
 
 response = client.delete_by_query(
-    index = "genshin-3-2-secondhalf",
+    index = "genshin-3-3-secondhalf",
     body = {
         "query": {
             "match_all": {}
@@ -94,7 +94,7 @@ print(response)
 
 jsonData = ""
 
-with open("genshinTeamsNamed32FirstHalf.csv",'r') as f3:
+with open("genshinTeamsNamed33FirstHalf.csv",'r') as f3:
     csvReader = csv.DictReader(f3)
     alphabeticalRow = [None, None, None, None]
 
@@ -108,7 +108,7 @@ with open("genshinTeamsNamed32FirstHalf.csv",'r') as f3:
         arrayToString = alphabeticalRow[0] + alphabeticalRow[1] + alphabeticalRow[2] + alphabeticalRow[3]
         hashValue = hash(arrayToString) + sys.maxsize + 1
 
-        jsonEntryHeader = {"index": {"_index": "genshin-3-2-firsthalf", "_id": hashValue}}
+        jsonEntryHeader = {"index": {"_index": "genshin-3-3-firsthalf", "_id": hashValue}}
         jsonEntryBody = {}
 
         jsonEntryBody['1'] = alphabeticalRow[0]
@@ -127,7 +127,7 @@ print(response)
 
 jsonData = ""
 
-with open("genshinTeamsNamed32SecondHalf.csv",'r') as f3:
+with open("genshinTeamsNamed33SecondHalf.csv",'r') as f3:
     csvReader = csv.DictReader(f3)
     alphabeticalRow = [None, None, None, None]
 
@@ -141,7 +141,7 @@ with open("genshinTeamsNamed32SecondHalf.csv",'r') as f3:
         arrayToString = alphabeticalRow[0] + alphabeticalRow[1] + alphabeticalRow[2] + alphabeticalRow[3]
         hashValue = hash(arrayToString) + sys.maxsize + 1
 
-        jsonEntryHeader = {"index": {"_index": "genshin-3-2-secondhalf", "_id": hashValue}}
+        jsonEntryHeader = {"index": {"_index": "genshin-3-3-secondhalf", "_id": hashValue}}
         jsonEntryBody = {}
 
         jsonEntryBody['1'] = alphabeticalRow[0]
