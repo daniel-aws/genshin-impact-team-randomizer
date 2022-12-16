@@ -26,10 +26,10 @@ f.close()
 
 print("Starting 3.2 First Half List, please wait until complete")
 
-with open("genshinTeamsNamed32FirstHalf.csv",'r') as f:
-    with open("./src/data/teampresets32FirstHalf.ts",'w') as f1:
+with open("genshinTeamsNamed33FirstHalf.csv",'r') as f:
+    with open("./src/data/teampresets33FirstHalf.ts",'w') as f1:
         f.readline() # skip header line
-        f1.write("export const teamPresets32FirstHalf = [\n")
+        f1.write("export const teamPresets33FirstHalf = [\n")
         for line in f:
             line = '\t[' + line
 
@@ -49,10 +49,10 @@ jsonFile.close()
 
 print("Starting 3.2 Second Half List, please wait until complete")
 
-with open("genshinTeamsNamed32SecondHalf.csv",'r') as f:
-    with open("./src/data/teampresets32SecondHalf.ts",'w') as f1:
+with open("genshinTeamsNamed33SecondHalf.csv",'r') as f:
+    with open("./src/data/teampresets33SecondHalf.ts",'w') as f1:
         f.readline() # skip header line
-        f1.write("export const teamPresets32SecondHalf = [\n")
+        f1.write("export const teamPresets33SecondHalf = [\n")
         for line in f:
             line = '\t[' + line
 
