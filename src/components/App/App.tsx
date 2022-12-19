@@ -191,11 +191,8 @@ const App: Component = () => {
   const ProMode: Component = () => {
     return (
       <Switch fallback={" "}>
-        <Match when={pro() == 2}>
-          <Options secondary onClick={() => setPro(0)} title={"Click me to switch to Randomizer Mode"}>3.3 Abyss Presets Teams Mode</Options>
-        </Match>
         <Match when={pro() == 1}>
-          <Options secondary onClick={() => setPro(2)} title={"Click me to switch to 3.3 Abyss Presets Teams Mode"}>Preset Teams Mode</Options>
+          <Options secondary onClick={() => setPro(0)} title={"Click me to switch to Randomizer Mode"}>Preset Teams Mode</Options>
         </Match>
         <Match when={pro() == 0}>
           <Options secondary onClick={() => setPro(1)} title={"Click me to switch to Preset Teams Mode"}>Randomizer Mode</Options>
@@ -268,7 +265,7 @@ const App: Component = () => {
   const team2 = () => Array.from({ length: 4 }, (_, i) => teams()[i + 4]);
   const generateTeams = () => {
     
-    if (pro() == 2) {
+    /*if (pro() == 2) {
       const randomSelectedCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters));
       let firstTeam: number[] = [];
       let secondTeam: number[] = [];
@@ -342,7 +339,7 @@ const App: Component = () => {
       //console.log(secondTeam);
       setTeams(() => [...firstTeam, ...secondTeam]);
     }
-    else if (pro() == 1) {
+    else*/ if (pro() == 1) {
       const randomSelectedCharacters = shuffle(Array.from(selectedCharacters.selectedCharacters));
       let firstTeam: number[] = [];
       let secondTeam: number[] = [];
@@ -610,7 +607,6 @@ const App: Component = () => {
       <h5 class={styles.title}>Choose between three modes:
         <p><b><u>Randomizer Mode:</u></b> Select roles for each character and whether to limit/require Main DPS or Supports. Then chooses randomly.</p>
         <p><b><u>Preset Teams Mode:</u></b> Teams and character modes are preset from well-known character guides and team databases.</p>
-        <p><b><u>3.2 Preset Teams Mode:</u></b> Teams and character modes are further restricted to 3.3 Abyss viable teams.</p>
       </h5>
       <main>
         <div class={styles.teams}>
