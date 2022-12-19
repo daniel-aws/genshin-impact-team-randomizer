@@ -187,7 +187,7 @@ const App: Component = () => {
     )
   }
   
-  const [pro, setPro] = createSignal(2);
+  const [pro, setPro] = createSignal(1);
   const ProMode: Component = () => {
     return (
       <Switch fallback={" "}>
