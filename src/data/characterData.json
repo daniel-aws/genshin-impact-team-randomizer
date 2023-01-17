@@ -17,6 +17,15 @@
     "collab": false
   },
   {
+    "id": 63,
+    "fullName": "Alhaitham",
+    "shortName": "Alhaitham",
+    "stars": 5,
+    "elements": ["dendro"],
+    "selected": false,
+    "collab": false
+  },
+  {
     "id": 3,
     "fullName": "Aloy",
     "shortName": "Aloy",
@@ -535,6 +544,15 @@
     "shortName": "Yanfei",
     "stars": 4,
     "elements": ["pyro"],
+    "selected": false,
+    "collab": false
+  },
+  {
+    "id": 64,
+    "fullName": "Yaoyao",
+    "shortName": "Yaoyao",
+    "stars": 4,
+    "elements": ["dendro"],
     "selected": false,
     "collab": false
   },
