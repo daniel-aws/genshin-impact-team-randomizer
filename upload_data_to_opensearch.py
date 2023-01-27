@@ -48,20 +48,18 @@ with open("genshinTeamsNamed.csv",'r') as f3:
     mainFileArray = np.loadtxt(f3, delimiter=",", dtype=str)
     mainFileArray = np.sort(mainFileArray)
 
-    csvReader = csv.DictReader(f3, fieldnames=["1", "2", "3", "4"])
-    alphabeticalRow = [None, None, None, None]
+    for team in mainFileArray:
+        arrayToString = ""
+        jsonEntryBody = {}
+        counter = 1
+        for character in team:
+          arrayToString += character
+          jsonEntryBody[counter] = character
+          counter += 1
 
-    for rows in csvReader:
-        arrayToString = rows["1"] + rows["2"] + rows["3"] + rows["4"]
         hashValue = hash(arrayToString) + sys.maxsize + 1
 
         jsonEntryHeader = {"index": {"_index": "genshin", "_id": hashValue}}
-        jsonEntryBody = {}
-
-        jsonEntryBody['1'] = rows["1"]
-        jsonEntryBody['2'] = rows["2"]
-        jsonEntryBody['3'] = rows["3"]
-        jsonEntryBody['4'] = rows["4"]
 
         jsonData += (json.dumps(jsonEntryHeader) + "\n" + json.dumps(jsonEntryBody) + "\n")
         
