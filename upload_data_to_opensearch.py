@@ -3,6 +3,7 @@ import csv
 import sys
 import os
 import boto3
+import numpy as np
 from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
 
 assert (sys.maxsize & (sys.maxsize+1)) == 0 # checks that maxsize+1 is a power of 2 
@@ -62,17 +63,14 @@ response = client.delete_by_query(
 jsonData = ""
 
 with open("genshinTeamsNamed.csv",'r') as f3:
-    csvReader = csv.DictReader(f3)
+    mainFileArray = np.loadtxt(f3, delimiter=",", dtype=str)
+    mainFileArray = np.sort(mainFileArray)
+
+    csvReader = csv.DictReader(f3, fieldnames=["1", "2", "3", "4"])
     alphabeticalRow = [None, None, None, None]
 
     for rows in csvReader:
-
-        alphabeticalRow[0] = rows['Character 1']
-        alphabeticalRow[1] = rows['Character 2']
-        alphabeticalRow[2] = rows['Character 3']
-        alphabeticalRow[3] = rows['Character 4']
-        alphabeticalRow.sort()
-        arrayToString = alphabeticalRow[0] + alphabeticalRow[1] + alphabeticalRow[2] + alphabeticalRow[3]
+        arrayToString = rows["1"] + rows["2"] + rows["3"] + rows["4"]
         hashValue = hash(arrayToString) + sys.maxsize + 1
 
         jsonEntryHeader = {"index": {"_index": "genshin", "_id": hashValue}}
