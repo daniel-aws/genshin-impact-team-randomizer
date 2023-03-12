@@ -3,8 +3,6 @@ import styles from './App.module.css';
 import { version } from '../../../package.json';
 import { Card } from '../Card';
 import { teamPresets } from '../../data/teampresets';
-import { teamPresets33FirstHalf } from '../../data/teampresets33FirstHalf';
-import { teamPresets33SecondHalf } from '../../data/teampresets33SecondHalf';
 import { Button } from '../Button';
 import { Container } from '../Container';
 import { Filters } from '../Filters';
@@ -51,6 +49,7 @@ const App: Component = () => {
     });
   }
   let currentSelectedCharacter: any = characters[0];
+  let difficultyBtnArray = new Array<any>(5);
   const characterIsMainDPS = () => {
     return mainDPSCharacters.mainDPSCharacters.includes(currentSelectedCharacter.id);
   }
@@ -167,6 +166,20 @@ const App: Component = () => {
 
     finaltext += posttext;
     setTeamCompText(finaltext);
+  }
+
+  const difficultyValues = ["Hardest","Harder","Medium","Easier","Easiest"]
+  const [difficulty, setDifficulty] = createSignal(5); // 5 is easiest teams, 1 includes worse teams
+  const DifficultyDisplay: Component = () => {
+    return (
+      <Show when={pro() == 1} fallback={" "}><div class={styles.difficultyBtnDiv}>Difficulty:&nbsp
+      <select value={difficultyValues[difficulty()-1]} onInput={e => setDifficulty(difficultyValues.indexOf(e.currentTarget.value) + 1)}>
+        <For each={difficultyValues}>{
+          (val) => <option value={val}>{val}</option>
+        }</For>
+      </select>
+    </div>
+      </Show>)
   }
 
   const [teamCompText, setTeamCompText] = createSignal("");
@@ -352,16 +365,20 @@ const App: Component = () => {
         const randomCharacter = randomSelectedCharacters[i];
         //console.log("Character 1: " + randomCharacter);
         for (let j: number = 0; j < randomTeamPresets.length; j++) {
+          // if team preset does not fit difficulty filter, continue
+          if (randomTeamPresets[j][4] != undefined && difficulty() > randomTeamPresets[j][4]) {
+            continue;
+          }
           firstTeam = [];
-          if (randomTeamPresets[j].includes(randomCharacter)) {
+          if (randomTeamPresets[j].slice(0, 4).includes(randomCharacter)) {
             let foundCount = 0;
-            for (let k: number = 0; k < randomTeamPresets[j].length; k++) {
+            for (let k: number = 0; k < 4; k++) {
               if (selectedCharacters.selectedCharacters.includes(randomTeamPresets[j][k])) {
                 foundCount++;
               }
             }
             if (foundCount == 4) {
-              firstTeam = randomTeamPresets[j];
+              firstTeam = randomTeamPresets[j].slice(0, 4);
               lastValidTeam = firstTeam;
               break;
             }
@@ -378,15 +395,18 @@ const App: Component = () => {
           randomCharacter2 = randomSelectedCharacters[l];
           //console.log("Character 2: " + randomCharacter2);
           for (let m: number = 0; m < randomTeamPresets.length; m++) {
-            if (randomTeamPresets[m].includes(randomCharacter2)) {
+            if (randomTeamPresets[m][4] != undefined && difficulty() > randomTeamPresets[m][4]) {
+              continue;
+            }
+            if (randomTeamPresets[m].slice(0, 4).includes(randomCharacter2)) {
               let foundCount = 0;
-              for (let n: number = 0; n < randomTeamPresets[m].length; n++) {
+              for (let n: number = 0; n < 4; n++) {
                 if (selectedCharacters.selectedCharacters.includes(randomTeamPresets[m][n]) && !firstTeam.includes(randomTeamPresets[m][n])) {
                   foundCount++;
                 }
               }
               if (foundCount == 4) {
-                secondTeam = randomTeamPresets[m];
+                secondTeam = randomTeamPresets[m].slice(0, 4);
                 found = true;
                 break;
               }
@@ -584,7 +604,7 @@ const App: Component = () => {
             <p class={styles.versionText}>Version {version}</p>
               <div class={styles.versionText2}>
               <a
-                href="https://github.com/daniel-aws/genshin-impact-team-randomizer"
+                href="https://github.com/daniel-gmk/genshin-impact-team-randomizer"
                 title="GitHub Repository"
                 target="_blank"
               >
@@ -636,6 +656,11 @@ const App: Component = () => {
           <Button onClick={generateTeams}>Generate teams</Button>
 
         </div>
+
+        <Container>
+          <DifficultyDisplay />
+        </Container>
+
         <Container>
           <Filters />
         </Container>

@@ -7,9 +7,10 @@ print("Starting Main List, please wait until complete")
 
 with open("genshinTeamsNamed.csv",'r') as f:
     with open("./src/data/teampresets.ts",'w') as f1:
-        f.readline() # skip header line
         f1.write("export const teamPresets = [\n")
         for line in f:
+            lineEnd = line[-2:]
+            line = line[:-2]
             line = '\t[' + line
 
             for i in data:
@@ -17,6 +18,7 @@ with open("genshinTeamsNamed.csv",'r') as f:
                     line = line.replace(i["shortName"], str(i["id"]))
 
             # Get rid of the trailing newline (if any).
+            line += lineEnd
             line = line.rstrip('\n')
             line += '],\n'
             f1.write(line)

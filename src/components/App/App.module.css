@@ -15,6 +15,12 @@
   align-items: center;
 }
 
+.difficultyBtnDiv {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
 .title {
   grid-column: 2;
   text-align: center;

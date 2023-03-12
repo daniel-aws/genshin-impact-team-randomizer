@@ -1,4 +1,5 @@
-[{
+[
+  {
     "id": 1,
     "fullName": "Arataki Itto",
     "shortName": "Itto",
@@ -121,6 +122,15 @@
     "shortName": "Diona",
     "stars": 4,
     "elements": ["cryo"],
+    "selected": false,
+    "collab": false
+  },
+  {
+    "id": 65,
+    "fullName": "Dehya",
+    "shortName": "Dehya",
+    "stars": 5,
+    "elements": ["pyro"],
     "selected": false,
     "collab": false
   },
@@ -591,4 +601,5 @@
     "elements": ["geo"],
     "selected": false,
     "collab": false
-  }]
+  }
+]
